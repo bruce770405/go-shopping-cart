@@ -38,7 +38,7 @@ func registerRouterLinks(router *gin.Engine) error {
 		user := v1.Group("/users")
 
 		// APIs need to be authenticated
-		user.Use(jwt.Auth(common.Config.JwtSecretPassword))
+		user.Use(jwt.Auth(common.K8sConfig.JwtSecretPassword))
 		{
 			user.POST("", c.AddUser)
 			user.GET("/list", c.ListUsers)
@@ -51,7 +51,7 @@ func registerRouterLinks(router *gin.Engine) error {
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	err := router.Run(common.Config.Port)
+	err := router.Run(common.K8sConfig.Port)
 	if err != nil {
 		return err
 	}

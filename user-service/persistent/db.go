@@ -22,15 +22,15 @@ type MongoDB struct {
 
 // Init initializes mongo database
 func (db *MongoDB) Init() error {
-	db.Databasename = common.Config.MgDbName
+	db.Databasename = common.K8sConfig.MgDbName
 
 	// DialInfo holds options for establishing a session with a MongoDB cluster.
 	dialInfo := &mgo.DialInfo{
-		Addrs:    []string{common.Config.MgAddrs}, // Get HOST + PORT
+		Addrs:    []string{common.K8sConfig.MgAddrs}, // Get HOST + PORT
 		Timeout:  60 * time.Second,
 		Database: db.Databasename,            // Database name
-		Username: common.Config.MgDbUsername, // Username
-		Password: common.Config.MgDbPassword, // Password
+		Username: common.K8sConfig.MgDbUsername, // Username
+		Password: common.K8sConfig.MgDbPassword, // Password
 	}
 
 	// Create a session which maintains a pool of socket connections

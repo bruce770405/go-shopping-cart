@@ -2,10 +2,13 @@
   "port": ":8808",
   "enableGinConsoleLog": true,
   "enableGinFileLog": true,
-  "logFilename": "logs/server.log",
-  "logMaxSize": 10,
-  "logMaxBackups": 10,
-  "logMaxAge": 30,
+  "Logging": {
+    "loglevel": "info",
+    "logFilename": "logs/server.log",
+    "logMaxSize": 10,
+    "logMaxBackups": 10,
+    "logMaxAge": 30
+  },
   "mgAddrs": "127.0.0.1:27017",
   "mgDbName": "userdb",
   "mgDbUsername": "users-admin",

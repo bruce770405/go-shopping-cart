@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/BurntSushi/toml v0.4.1 // indirect
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/contrib v0.0.0-20201101042839-6a891bf89f19
 	github.com/gin-gonic/gin v1.7.4
 	github.com/go-playground/validator/v10 v10.9.0 // indirect
@@ -21,4 +21,5 @@ require (
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
+	k8s.io/client-go v0.20.4 // indirect
 )
