@@ -4,6 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"io"
 	"os"
+	"shopping-cart/common"
+	"shopping-cart/persistent"
+	"shopping-cart/router"
 )
 
 // Main manages main golang application
@@ -19,23 +22,8 @@ func main() {
 		return
 	}
 
-	defer databases.Database.Close()
+	defer persistent.Database.Close()
 
-	c := controllers.Movie{}
-
-	// Simple group: v1
-	v1 := m.router.Group("/api/v1")
-	{
-		v1.POST("/login", c.Login)
-		v1.GET("/movies/list", c.ListMovies)
-
-		// APIs need to use token string
-		v1.Use(jwt.Auth(common.Config.JwtSecretPassword))
-		v1.POST("/movies", c.AddMovie)
-	}
-
-	m.router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	m.router.Run(common.Config.Port)
 }
 
 func (m *Main) initServer() error {
@@ -46,8 +34,8 @@ func (m *Main) initServer() error {
 		return err
 	}
 
-	// Initialize mongo database
-	err = databases.Database.Init()
+	// Initialize redis
+	err = persistent.Database.Init()
 	if err != nil {
 		return err
 	}
@@ -66,7 +54,12 @@ func (m *Main) initServer() error {
 		}
 	}
 
-	m.router = gin.Default()
+	// initial Gin router
+	r := router.Router{}
+	err = r.InitRouters()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

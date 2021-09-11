@@ -1,15 +1,21 @@
 {
-  "port": ":8808",
+  "port": ":8809",
   "enableGinConsoleLog": true,
-  "enableGinFileLog": true,
+  "enableGinFileLog": false,
   "logFilename": "logs/server.log",
   "logMaxSize": 10,
   "logMaxBackups": 10,
   "logMaxAge": 30,
+
   "mgAddrs": "127.0.0.1:27017",
-  "mgDbName": "userdb",
+  "mgDbName": "shopping-db",
   "mgDbUsername": "users-admin",
   "mgDbPassword": "1qaz2wsx",
+
+  "redisHost": "localhost:6379",
+  "redisPassword": "",
+
+  "authAddr": "http://127.0.0.1:8808",
   "jwtSecretPassword": "bruce",
   "issuer": "microservice"
 }

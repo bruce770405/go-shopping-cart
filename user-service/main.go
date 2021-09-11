@@ -9,7 +9,7 @@ import (
 	"user-service/common"
 	_ "user-service/docs"
 	"user-service/persistent"
-	"user-service/routers"
+	"user-service/router"
 )
 
 func initServer() error {
@@ -42,8 +42,8 @@ func initServer() error {
 		return err
 	}
 
-	// initial Gin routers
-	r := routers.Router{}
+	// initial Gin router
+	r := router.Router{}
 	err = r.InitRouters()
 	if err != nil {
 		return err
