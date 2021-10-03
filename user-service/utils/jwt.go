@@ -25,12 +25,12 @@ func (u *Jwt) GenerateJWT(name string, role string) (string, error) {
 		role,
 		jwt_lib.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
-			Issuer:    common.K8sConfig.Issuer,
+			Issuer:    common.K8sConfig.Out.Issuer,
 		},
 	}
 
 	token := jwt_lib.NewWithClaims(jwt_lib.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString([]byte(common.K8sConfig.JwtSecretPassword))
+	tokenString, err := token.SignedString([]byte(common.K8sConfig.Out.JwtSecretPassword))
 
 	return tokenString, err
 }

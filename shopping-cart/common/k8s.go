@@ -1,12 +1,12 @@
 package common
 
 import (
-	"fmt"
-	"github.com/fsnotify/fsnotify"
-	"github.com/natefinch/lumberjack"
-	log "github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
-	"os"
+"fmt"
+"github.com/fsnotify/fsnotify"
+"github.com/natefinch/lumberjack"
+log "github.com/sirupsen/logrus"
+"github.com/spf13/viper"
+"os"
 )
 
 // Config shares the global configuration

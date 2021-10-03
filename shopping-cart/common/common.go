@@ -37,6 +37,14 @@ var (
 	Config *Configuration
 )
 
+type Local struct {
+	c Configuration
+}
+
+type K8s struct {
+	Out Configuration
+}
+
 // Status Text
 const (
 	ErrNameEmpty      = "Name is empty"

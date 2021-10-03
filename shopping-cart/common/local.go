@@ -1,19 +1,11 @@
 package common
 
 import (
-	"encoding/json"
-	"github.com/natefinch/lumberjack"
-	log "github.com/sirupsen/logrus"
-	"os"
+"encoding/json"
+"github.com/natefinch/lumberjack"
+log "github.com/sirupsen/logrus"
+"os"
 )
-
-//
-//import (
-//	"encoding/json"
-//	log "github.com/sirupsen/logrus"
-//	"gopkg.in/natefinch/lumberjack.v2"
-//	"os"
-//)
 
 // Config shares the global configuration
 var (
@@ -37,10 +29,10 @@ func (k *Local) LoadConfig() error {
 
 	// Setting Service Logger
 	log.SetOutput(&lumberjack.Logger{
-		Filename:   LocalConfig.c.Log.LogFilename,
-		MaxSize:    LocalConfig.c.Log.LogMaxSize,    // megabytes after which new file is created
-		MaxBackups: LocalConfig.c.Log.LogMaxBackups, // number of backups
-		MaxAge:     LocalConfig.c.Log.LogMaxAge,     // days
+		Filename:   LocalConfig.c.LogFilename,
+		MaxSize:    LocalConfig.c.LogMaxSize,    // megabytes after which new file is created
+		MaxBackups: LocalConfig.c.LogMaxBackups, // number of backups
+		MaxAge:     LocalConfig.c.LogMaxAge,     // days
 	})
 	log.SetLevel(log.DebugLevel)
 

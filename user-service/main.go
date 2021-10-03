@@ -21,17 +21,17 @@ func initServer() error {
 	}
 
 	// Setting Gin Logger
-	if common.K8sConfig.EnableGinFileLog {
+	if common.K8sConfig.Out.EnableGinFileLog {
 		currentTime := time.Now()
 		f, _ := os.Create(fmt.Sprintf("logs/log-%s.log", currentTime.Format("YYYY-MM-DD")))
 
-		if common.K8sConfig.EnableGinConsoleLog {
+		if common.K8sConfig.Out.EnableGinConsoleLog {
 			gin.DefaultWriter = io.MultiWriter(os.Stdout, f)
 		} else {
 			gin.DefaultWriter = io.MultiWriter(f)
 		}
 	} else {
-		if !common.K8sConfig.EnableGinConsoleLog {
+		if !common.K8sConfig.Out.EnableGinConsoleLog {
 			gin.DefaultWriter = io.MultiWriter()
 		}
 	}

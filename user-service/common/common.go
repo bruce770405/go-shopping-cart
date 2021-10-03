@@ -13,7 +13,7 @@ type Configuration struct {
 	Port                string  `mapstructure:"port"`
 	EnableGinConsoleLog bool    `mapstructure:"enableGinConsoleLog"`
 	EnableGinFileLog    bool    `mapstructure:"enableGinFileLog"`
-	Logging             Logging `mapstructure:"logging" validate:"required"`
+	Log             Logging `mapstructure:"logging" validate:"required"`
 	MgAddrs             string  `mapstructure:"mgAddrs"`
 	MgDbName            string  `mapstructure:"mgDbName"`
 	MgDbUsername        string  `mapstructure:"mgDbUsername"`
@@ -24,14 +24,15 @@ type Configuration struct {
 
 const (
 	varLogLevel     = "log.level"
+	varPathToConfig = "config.file"
 )
 
 type Local struct {
-	Configuration
+	c Configuration
 }
 
 type K8s struct {
-	Configuration
+	Out Configuration
 }
 
 // COLLECTIONs of the database table
