@@ -26,7 +26,7 @@ func LoadConfig() error {
 	K8sConfig := new(K8s)
 
 	v := viper.New()
-	v.SetDefault(varPathToConfig, "./config.json")
+	v.SetDefault(varPathToConfig, "/etc/config/config.json")
 	v.SetDefault(varLogLevel, "info")
 	v.AutomaticEnv()
 	//v.SetConfigName("config") // default can search this file name
@@ -35,7 +35,7 @@ func LoadConfig() error {
 	err := v.ReadInConfig() // Find and read the config file
 	log.WithField("path", GetPathToConfig(v)).Warn("loading config")
 	if _, ok := err.(*os.PathError); ok {
-		log.Warnf("no config file '%s' not found. Using default values", "config.file")
+		log.Warnf("no config file '%s' not found. Using default values", "config.json")
 	} else if err != nil { // Handle other errors that occurred while reading the config file
 		panic(fmt.Errorf("fatal error while reading the config file: %s", err))
 	}
