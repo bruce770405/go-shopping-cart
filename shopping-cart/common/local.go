@@ -1,11 +1,19 @@
 package common
 
 import (
-"encoding/json"
-"github.com/natefinch/lumberjack"
-log "github.com/sirupsen/logrus"
-"os"
+	"encoding/json"
+	"github.com/natefinch/lumberjack"
+	log "github.com/sirupsen/logrus"
+	"os"
 )
+
+//
+//import (
+//	"encoding/json"
+//	log "github.com/sirupsen/logrus"
+//	"gopkg.in/natefinch/lumberjack.v2"
+//	"os"
+//)
 
 // Config shares the global configuration
 var (
@@ -13,26 +21,25 @@ var (
 )
 
 //// LoadConfig loads configuration from the config file
-func (k *Local) LoadConfig() error {
+func (local *Local) LoadConfig() error {
 	// Filename is the path to the json config file
 	file, err := os.Open("config/config.json")
 	if err != nil {
 		return err
 	}
 
-	//LocalConfig = new(Local)
 	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&LocalConfig)
+	err = decoder.Decode(&local)
 	if err != nil {
 		return err
 	}
 
 	// Setting Service Logger
 	log.SetOutput(&lumberjack.Logger{
-		Filename:   LocalConfig.c.LogFilename,
-		MaxSize:    LocalConfig.c.LogMaxSize,    // megabytes after which new file is created
-		MaxBackups: LocalConfig.c.LogMaxBackups, // number of backups
-		MaxAge:     LocalConfig.c.LogMaxAge,     // days
+		Filename:   LocalConfig.Out.Log.LogFilename,
+		MaxSize:    LocalConfig.Out.Log.LogMaxSize,    // megabytes after which new file is created
+		MaxBackups: LocalConfig.Out.Log.LogMaxBackups, // number of backups
+		MaxAge:     LocalConfig.Out.Log.LogMaxAge,     // days
 	})
 	log.SetLevel(log.DebugLevel)
 

@@ -15,7 +15,8 @@ import (
 func initServer() error {
 	var err error
 	// Load config file
-	err = common.LoadConfig()
+	err = common.K8sConfig.LoadConfig()
+	//err = common.K8sConfig.LocalConfig()
 	if err != nil {
 		return err
 	}

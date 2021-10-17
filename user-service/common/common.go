@@ -27,8 +27,12 @@ const (
 	varPathToConfig = "config.file"
 )
 
+type Config struct {
+	Out Configuration
+}
+
 type Local struct {
-	c Configuration
+	Out Configuration
 }
 
 type K8s struct {

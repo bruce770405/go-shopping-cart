@@ -1,92 +1,45 @@
 package common
 
-import (
-	"encoding/json"
-	"os"
-
-	"github.com/natefinch/lumberjack"
-	log "github.com/sirupsen/logrus"
-)
+type Logging struct {
+	LogLevel      string `mapstructure:"loglevel" validate:"required,oneof=debug info warn error"`
+	LogFilename   string `mapstructure:"logFilename"`
+	LogMaxSize    int    `mapstructure:"logMaxSize"`
+	LogMaxBackups int    `mapstructure:"logMaxBackups"`
+	LogMaxAge     int    `mapstructure:"logMaxAge"`
+}
 
 // Configuration stores setting values
 type Configuration struct {
-	Port                string `json:"port"`
-	EnableGinConsoleLog bool   `json:"enableGinConsoleLog"`
-	EnableGinFileLog    bool   `json:"enableGinFileLog"`
-
-	LogFilename   string `json:"logFilename"`
-	LogMaxSize    int    `json:"logMaxSize"`
-	LogMaxBackups int    `json:"logMaxBackups"`
-	LogMaxAge     int    `json:"logMaxAge"`
-
-	MgAddrs      string `json:"mgAddrs"`
-	MgDbName     string `json:"mgDbName"`
-	MgDbUsername string `json:"mgDbUsername"`
-	MgDbPassword string `json:"mgDbPassword"`
-
-	RedisHost     string  `json:"redisHost"`
-	RedisPassword string  `json:"redisPassword"`
-
-	AuthAddr          string `json:"authAddr"`
-	JwtSecretPassword string `json:"jwtSecretPassword"`
-	Issuer            string `json:"issuer"`
+	Port                string  `mapstructure:"port"`
+	EnableGinConsoleLog bool    `mapstructure:"enableGinConsoleLog"`
+	EnableGinFileLog    bool    `mapstructure:"enableGinFileLog"`
+	Log             Logging `mapstructure:"logging" validate:"required"`
+	MgAddrs             string  `mapstructure:"mgAddrs"`
+	MgDbName            string  `mapstructure:"mgDbName"`
+	MgDbUsername        string  `mapstructure:"mgDbUsername"`
+	MgDbPassword        string  `mapstructure:"mgDbPassword"`
+	JwtSecretPassword   string  `mapstructure:"jwtSecretPassword"`
+	Issuer              string  `mapstructure:"issuer"`
 }
 
-// Config shares the global configuration
-var (
-	Config *Configuration
+const (
+	varLogLevel     = "log.level"
+	varPathToConfig = "config.file"
 )
 
+type Config struct {
+	Out Configuration
+}
+
 type Local struct {
-	c Configuration
+	Out Configuration
 }
 
 type K8s struct {
 	Out Configuration
 }
 
-// Status Text
+// COLLECTIONs of the database table
 const (
-	ErrNameEmpty      = "Name is empty"
-	ErrPasswordEmpty  = "Password is empty"
-	ErrNotObjectIDHex = "String is not a valid hex representation of an ObjectId"
+	ColUsers = "users"
 )
-
-// Status Code
-const (
-	StatusCodeUnknown = -1
-	StatusCodeOK      = 0
-	Authroized
-
-	StatusMismatch = 10
-)
-
-// LoadConfig loads configuration from the config file
-func LoadConfig() error {
-	// Filename is the path to the json config file
-	file, err := os.Open("config/config.json")
-	if err != nil {
-		return err
-	}
-
-	Config = new(Configuration)
-	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&Config)
-	if err != nil {
-		return err
-	}
-
-	// Setting Service Logger
-	log.SetOutput(&lumberjack.Logger{
-		Filename:   Config.LogFilename,
-		MaxSize:    Config.LogMaxSize,    // megabytes after which new file is created
-		MaxBackups: Config.LogMaxBackups, // number of backups
-		MaxAge:     Config.LogMaxAge,     // days
-	})
-	log.SetLevel(log.DebugLevel)
-
-	// log.SetFormatter(&log.TextFormatter{})
-	log.SetFormatter(&log.JSONFormatter{})
-
-	return nil
-}
