@@ -18,8 +18,8 @@ type Redis struct {
 // Init initializes redis database
 func (r *Redis) Init() error {
 	r.Client = redis.NewClient(&redis.Options{
-		Addr:     common.Config.RedisHost,
-		Password: common.Config.RedisPassword,
+		Addr:     common.K8sConfig.Out.Redis.Host,
+		Password: common.K8sConfig.Out.Redis.Password,
 		DB:       0, // use default DB
 	})
 	return nil

@@ -24,7 +24,6 @@ func (r *Router) InitRouters() error {
 	return nil
 }
 
-
 func registerRouterLinks(router *gin.Engine) error {
 	c := controller.Shopping{}
 
@@ -32,20 +31,19 @@ func registerRouterLinks(router *gin.Engine) error {
 	v1 := router.Group("/api/v1")
 	{
 		// APIs need to use token string
-		v1.Use(jwt.Auth(common.Config.JwtSecretPassword))
+		v1.Use(jwt.Auth(common.K8sConfig.Out.JwtSecretPassword))
 		{
 			v1.POST("/cart/add", c.AddProdInCart)
 		}
 	}
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	router.Run(common.Config.Port)
+	router.Run(common.K8sConfig.Out.Port)
 
-	err := router.Run(common.Config.Port)
+	err := router.Run(common.K8sConfig.Out.Port)
 	if err != nil {
 		return err
 	}
 
 	return nil
 }
-

@@ -1,5 +1,17 @@
 package common
 
+type Redis struct {
+	Host     string `mapstructure:"localhost:6379"`
+	Password string `mapstructure:"redisPassword"`
+}
+
+type DataSource struct {
+	MgAddrs      string `mapstructure:"mgAddrs"`
+	MgDbName     string `mapstructure:"mgDbName"`
+	MgDbUsername string `mapstructure:"mgDbUsername"`
+	MgDbPassword string `mapstructure:"mgDbPassword"`
+}
+
 type Logging struct {
 	LogLevel      string `mapstructure:"loglevel" validate:"required,oneof=debug info warn error"`
 	LogFilename   string `mapstructure:"logFilename"`
@@ -10,16 +22,14 @@ type Logging struct {
 
 // Configuration stores setting values
 type Configuration struct {
-	Port                string  `mapstructure:"port"`
-	EnableGinConsoleLog bool    `mapstructure:"enableGinConsoleLog"`
-	EnableGinFileLog    bool    `mapstructure:"enableGinFileLog"`
-	Log             Logging `mapstructure:"logging" validate:"required"`
-	MgAddrs             string  `mapstructure:"mgAddrs"`
-	MgDbName            string  `mapstructure:"mgDbName"`
-	MgDbUsername        string  `mapstructure:"mgDbUsername"`
-	MgDbPassword        string  `mapstructure:"mgDbPassword"`
-	JwtSecretPassword   string  `mapstructure:"jwtSecretPassword"`
-	Issuer              string  `mapstructure:"issuer"`
+	Port                string     `mapstructure:"port"`
+	EnableGinConsoleLog bool       `mapstructure:"enableGinConsoleLog"`
+	EnableGinFileLog    bool       `mapstructure:"enableGinFileLog"`
+	Log                 Logging    `mapstructure:"logging" validate:"required"`
+	Db                  DataSource `mapstructure:"datasource" validate:"required"`
+	Redis               Redis      `mapstructure:"redis" validate:"required"`
+	JwtSecretPassword   string     `mapstructure:"jwtSecretPassword"`
+	Issuer              string     `mapstructure:"issuer"`
 }
 
 const (

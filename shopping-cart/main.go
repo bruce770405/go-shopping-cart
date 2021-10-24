@@ -29,7 +29,7 @@ func main() {
 func (m *Main) initServer() error {
 	var err error
 	// Load config file
-	err = common.LoadConfig()
+	err = common.K8sConfig.LoadConfig()
 	if err != nil {
 		return err
 	}
@@ -41,15 +41,15 @@ func (m *Main) initServer() error {
 	}
 
 	// Setting Gin Logger
-	if common.Config.EnableGinFileLog {
+	if common.K8sConfig.Out.EnableGinFileLog {
 		f, _ := os.Create("logs/gin.log")
-		if common.Config.EnableGinConsoleLog {
+		if common.K8sConfig.Out.EnableGinConsoleLog {
 			gin.DefaultWriter = io.MultiWriter(os.Stdout, f)
 		} else {
 			gin.DefaultWriter = io.MultiWriter(f)
 		}
 	} else {
-		if !common.Config.EnableGinConsoleLog {
+		if !common.K8sConfig.Out.EnableGinConsoleLog {
 			gin.DefaultWriter = io.MultiWriter()
 		}
 	}

@@ -19,7 +19,7 @@ type Jwt struct {
 // parserJWT parser token to get customerId
 func (u Jwt) GetCustomerIdByJWT() (string, error) {
 	jwtToken, err := jwt_lib.ParseWithClaims(u.Token, &SdtClaims{}, func(token *jwt_lib.Token) (i interface{}, e error) {
-		return []byte(common.Config.JwtSecretPassword), nil
+		return []byte(common.K8sConfig.Out.JwtSecretPassword), nil
 	})
 
 	if err != nil {

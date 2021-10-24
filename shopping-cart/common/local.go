@@ -7,14 +7,6 @@ import (
 	"os"
 )
 
-//
-//import (
-//	"encoding/json"
-//	log "github.com/sirupsen/logrus"
-//	"gopkg.in/natefinch/lumberjack.v2"
-//	"os"
-//)
-
 // Config shares the global configuration
 var (
 	LocalConfig Local
