@@ -22,24 +22,22 @@ type MongoDB struct {
 
 // Init initializes mongo database
 func (db *MongoDB) Init() error {
+	log.Info("init database resource")
 	db.Databasename = common.K8sConfig.Out.MgDbName
-
 	// DialInfo holds options for establishing a session with a MongoDB cluster.
 	dialInfo := &mgo.DialInfo{
 		Addrs:    []string{common.K8sConfig.Out.MgAddrs}, // Get HOST + PORT
 		Timeout:  60 * time.Second,
-		Database: db.Databasename,            // Database name
+		Database: db.Databasename,                   // Database name
 		Username: common.K8sConfig.Out.MgDbUsername, // Username
 		Password: common.K8sConfig.Out.MgDbPassword, // Password
 	}
-
 	// Create a session which maintains a pool of socket connections
 	// to the DB MongoDB database.
 	var err error
 	db.MgDbSession, err = mgo.DialWithInfo(dialInfo)
-
 	if err != nil {
-		log.Debug("Can't connect to mongo, go error: ", err)
+		log.Error("Can't connect to mongo, go error: ", err)
 		return err
 	}
 
@@ -50,7 +48,6 @@ func (db *MongoDB) Init() error {
 func (db *MongoDB) initData() error {
 	var err error
 	var count int
-
 	// Check if user collection has at least one document
 	sessionCopy := db.MgDbSession.Copy()
 	defer sessionCopy.Close()
