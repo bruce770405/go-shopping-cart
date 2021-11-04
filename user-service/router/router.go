@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"github.com/gin-gonic/contrib/jwt"
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -25,6 +26,7 @@ func (r *Router) InitRouters() error {
 }
 
 func registerRouterLinks(router *gin.Engine) error {
+	fmt.Println("registerRouterLinks init")
 	c := controller.User{}
 
 	// Simple group: v1
@@ -36,11 +38,10 @@ func registerRouterLinks(router *gin.Engine) error {
 		}
 
 		user := v1.Group("/users")
-
+		user.POST("", c.AddUser)
 		// APIs need to be authenticated
 		user.Use(jwt.Auth(common.K8sConfig.Out.JwtSecretPassword))
 		{
-			user.POST("", c.AddUser)
 			user.GET("/list", c.ListUsers)
 			user.GET("detail/:id", c.GetUserByID)
 			user.GET("/", c.GetUserByParams)
@@ -49,6 +50,11 @@ func registerRouterLinks(router *gin.Engine) error {
 		}
 	}
 
+	h := controller.Health{}
+	router.GET("/health", h.HealthGET)
+	router.GET("/liveness", h.ReadyGET)
+
+	// swagger
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	err := router.Run(common.K8sConfig.Out.Port)
