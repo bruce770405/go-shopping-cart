@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"io"
 	"os"
-	"time"
 	"user-service/common"
 	_ "user-service/docs"
 	"user-service/persistent"
@@ -23,8 +22,8 @@ func initServer() error {
 
 	// Setting Gin Logger
 	if common.K8sConfig.Out.EnableGinFileLog {
-		currentTime := time.Now()
-		f, _ := os.Create(fmt.Sprintf("logs/log-%s.log", currentTime.Format("YYYY-MM-DD")))
+		//currentTime := time.Now()
+		f, _ := os.Create(fmt.Sprintf("logs/gin.log"))
 
 		if common.K8sConfig.Out.EnableGinConsoleLog {
 			gin.DefaultWriter = io.MultiWriter(os.Stdout, f)
