@@ -1,9 +1,12 @@
 package persistent
 
 import (
+	"crypto/tls"
+	"fmt"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
+	"net"
 	"time"
 	"user-service/common"
 	"user-service/entities"
@@ -22,25 +25,36 @@ type MongoDB struct {
 
 // Init initializes mongo database
 func (db *MongoDB) Init() error {
-	log.Info("init database resource")
+	log.Info("Init Database Resource")
 	db.Databasename = common.K8sConfig.Out.MgDbName
-	// DialInfo holds options for establishing a session with a MongoDB cluster.
+	//DialInfo holds options for establishing a session with a MongoDB cluster.
 	dialInfo := &mgo.DialInfo{
-		Addrs:    []string{common.K8sConfig.Out.MgAddrs}, // Get HOST + PORT
-		Timeout:  60 * time.Second,
-		Database: db.Databasename,                   // Database name
+		Addrs:   []string{common.K8sConfig.Out.MgAddrs}, // Get HOST + PORT
+		Timeout: 60 * time.Second,
+		//Database: common.K8sConfig.Out.MgDbName,                   // Database name
 		Username: common.K8sConfig.Out.MgDbUsername, // Username
 		Password: common.K8sConfig.Out.MgDbPassword, // Password
 	}
+
+	//databaseName := common.K8sConfig.Out.MgDbName
+	//dialInfo, err := mgo.ParseURL(mongoURI)
+	//Below part is similar to above.
+	tlsConfig := &tls.Config{}
+	dialInfo.DialServer = func(addr *mgo.ServerAddr) (net.Conn, error) {
+		conn, err := tls.Dial("tcp", addr.String(), tlsConfig)
+		fmt.Println("DialServer error", err)
+		return conn, err
+	}
+
 	// Create a session which maintains a pool of socket connections
 	// to the DB MongoDB database.
 	var err error
 	db.MgDbSession, err = mgo.DialWithInfo(dialInfo)
 	if err != nil {
-		log.Error("Can't connect to mongo, go error: ", err)
+		log.Error("Can't connect to mongo, go error", err)
 		return err
 	}
-
+	log.Error("success DataSource init")
 	return db.initData()
 }
 

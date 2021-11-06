@@ -33,23 +33,29 @@ func (k8s *K8s) LoadConfig() error {
 	//v.AddConfigPath("./config/")
 	v.SetConfigFile(k8s.GetPathToConfig(v))
 	err := v.ReadInConfig() // Find and read the config file
-	log.WithField("path", k8s.GetPathToConfig(v)).Warn("loading config")
+	fmt.Println("config loader path", k8s.GetPathToConfig(v))
+
+	//log.WithField("path", k8s.GetPathToConfig(v)).Warn("loading config")
 	if _, ok := err.(*os.PathError); ok {
-		log.Warnf("no config file '%s' not found. Using default values", "config.json")
+		panic(fmt.Errorf("no config file '%s' not found. Using default values", "config.json"))
 	} else if err != nil { // Handle other errors that occurred while reading the config file
-		panic(fmt.Errorf("fatal error while reading the config file: %s", err))
+		panic(fmt.Errorf("Fatal error config file: %w \n", err))
 	}
-
 	err = v.Unmarshal(&k8s.Out)
-
+	if err != nil { // Handle other errors that occurred while reading the config file
+		panic(fmt.Errorf("Fatal error config file: %w \n", err))
+	}
 	// TODO another value need reflash when config change
 	k8s.setLog()
 	v.WatchConfig()
 	v.OnConfigChange(func(e fsnotify.Event) {
 		log.WithField("file", e.Name).Warn("Config file changed")
-		// TODO another value need reflash when config change
+		//	// TODO another value need reflash when config change
 		k8s.setLog()
 	})
+
+	log.Info("===== success to loader configs ====")
+	log.Debug("k8s.Out")
 	return nil
 }
 
@@ -60,6 +66,8 @@ func (k8s *K8s) setLog() {
 		MaxSize:    K8sConfig.Out.Log.LogMaxSize,    // megabytes after which new file is created
 		MaxBackups: K8sConfig.Out.Log.LogMaxBackups, // number of backups
 		MaxAge:     K8sConfig.Out.Log.LogMaxAge,     // days
+		LocalTime:  true,
+		Compress:   true,
 	})
 	log.SetLevel(log.DebugLevel)
 	// log.SetFormatter(&log.TextFormatter{})

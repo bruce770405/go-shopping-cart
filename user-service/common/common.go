@@ -13,7 +13,7 @@ type Configuration struct {
 	Port                string  `mapstructure:"port"`
 	EnableGinConsoleLog bool    `mapstructure:"enableGinConsoleLog"`
 	EnableGinFileLog    bool    `mapstructure:"enableGinFileLog"`
-	Log             Logging `mapstructure:"logging" validate:"required"`
+	Log                 Logging `mapstructure:"logging" validate:"required"`
 	MgAddrs             string  `mapstructure:"mgAddrs"`
 	MgDbName            string  `mapstructure:"mgDbName"`
 	MgDbUsername        string  `mapstructure:"mgDbUsername"`
