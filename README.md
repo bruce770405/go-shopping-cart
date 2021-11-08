@@ -25,3 +25,6 @@
 ```
   docker run -it {service-name} -p {service-port}:{bind-port} --name="{service-name}"
 ```
+
+## use kubenates
+    https://github.com/bruce770405/shopping-cart-deploy
