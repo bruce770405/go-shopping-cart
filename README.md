@@ -1,21 +1,16 @@
 # go-shopping-cart
 
-## services
-* user-service
-  ```
-    port 8808
-  ```
-* shopping-cart-service
-   ```
-    port 8809
-  ```
-
 ## technology
 * go 1.13
 * gin
 * mongodb in aws
 * swagger
 * docker
+
+|  service name   | desc  | port |
+|  ----  | ----  | ----  |
+| user-service  | auth user | 8808 |
+| shopping-cart-service  | product caches and shopping records | 8809 |
 
 ## install
 ```
