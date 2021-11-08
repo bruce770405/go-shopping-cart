@@ -4,6 +4,7 @@
 * go 1.13
 * gin
 * mongodb in aws
+* redis
 * swagger
 * docker
 
