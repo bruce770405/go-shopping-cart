@@ -17,8 +17,8 @@
 
 ## install
 ```
-  move to service folder
-  $ docker build -t {service-name}:{version} .
+move to service folder
+$ docker build -t {service-name}:{version} .
 ```
 
 ## run
