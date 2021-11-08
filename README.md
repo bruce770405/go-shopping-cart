@@ -23,7 +23,7 @@
 
 ## run
 ```
-  docker run -it {service-name} -p {service-port}:{bind-port} --name="{service-name}"
+docker run -it {service-name} -p {service-port}:{bind-port} --name="{service-name}"
 ```
 
 ## use kubenates
