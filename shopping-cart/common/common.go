@@ -51,5 +51,5 @@ type K8s struct {
 
 // COLLECTIONs of the database table
 const (
-	ColUsers = "users"
+	ColShoppingCart = "shoppingCart"
 )
